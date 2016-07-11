@@ -62,23 +62,23 @@ function setupCytoscape() {
       style: {
         content:'data(id)'
       }
-    },{
-      selector: 'edge',
-      style: {
-        'width': 3,
-        'line-color': '#ccc',
-        'target-arrow-color': '#ccc',
-        'target-arrow-shape': 'triangle'
-      }
     }]
   });
 }
 
 function init() {
   setupCytoscape();
-  $.get(app.descriptorsUrl, function recvinit(data, _status, _xhr) {
-    app.descriptors = data;
-    app.cy.add(collectElements()).layout({name: 'breadthfirst'});
+  $.ajax({
+    method: 'get',
+    url: app.descriptorsUrl,
+    dataType: 'json',
+    success: function recvinit(data, _status, _xhr) {
+      app.descriptors = data;
+      app.cy.add(collectElements()).layout({name: 'breadthfirst'});
+    },
+    error: function recvfail(_xhr, textStatus, errorThrown) {
+      console.error(textStatus, errorThrown + "");
+    }
   });
 }
 

@@ -9,22 +9,32 @@ function collectElements() {
   // fill in missing node IDs at the end.
   var seenNodes = {};
 
-  $.each(app.descriptors.services, function(_i, svc) {
+  $.each(app.descriptors.services, function(index, svc) {
+    var sid = svc.id;
+    if(typeof sid != 'string') {
+      console.error("Invalid service id at position " + index + ":", sid);
+      return;
+    }
+    if(seenNodes[sid]) {
+      console.error("Duplicate service id:", sid);
+      return;
+    }
     elems.push({
       group: "nodes",
-      data: {id: svc.id}
+      data: {id: sid}
     });
-    seenNodes[svc.id] = true;
+    seenNodes[sid] = true;
 
     $.each(svc.dependencies, function(_j, dep) {
+      var tid = dep.on;
       elems.push({
         group: "edges",
         data: {
-          source: svc.id,
-          target: dep.on
+          source: sid,
+          target: tid
         }
       });
-      seenNodes[dep.on] = seenNodes[dep.on] || false;
+      seenNodes[tid] = seenNodes[tid] || false;
     });
   });
 

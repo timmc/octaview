@@ -41,16 +41,31 @@ function collectElements() {
   return elems;
 }
 
+function setupCytoscape() {
+  app.cy = cytoscape({
+    container: document.getElementById('cytoscape-container'),
+    minZoom: 1/8,
+    maxZoom: 2,
+    style: [{
+      selector: 'node',
+      style:{content:'data(id)'}
+    },{
+      selector: 'edge',
+      style: {
+        'width': 3,
+        'line-color': '#ccc',
+        'target-arrow-color': '#ccc',
+        'target-arrow-shape': 'triangle'
+      }
+    }]
+  });
+}
+
 function init() {
+  setupCytoscape();
   $.get(app.descriptorsUrl, function recvinit(data, _status, _xhr) {
     app.descriptors = data;
-    cytoscape({
-      container: document.getElementById('cytoscape-container'),
-      elements: collectElements(),
-      style: [
-        {selector: 'node', style:{content:'data(id)'}}
-      ]
-    });
+    app.cy.add(collectElements()).layout({name: 'breadthfirst'});
   });
 }
 

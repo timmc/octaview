@@ -46,7 +46,10 @@ function init() {
     app.descriptors = data;
     cytoscape({
       container: document.getElementById('cytoscape-container'),
-      elements: collectElements()
+      elements: collectElements(),
+      style: [
+        {selector: 'node', style:{content:'data(id)'}}
+      ]
     });
   });
 }

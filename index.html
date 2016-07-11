@@ -5,10 +5,23 @@
   <title>Service graph</title>
 
   <style>
+    #layout-main {
+    position: relative;
+    }
+
+    #layout-sidebar {
+    float: left;
+    width: 20%;
+    }
+
+    #layout-graph {
+    float: right;
+    width: 75%;
+    }
+
     #cytoscape-container {
-      width: auto;
-      height: 500px;
-      border: 1px solid #444;
+    height: 700px;
+    border: 1px solid #999;
     }
   </style>
 
@@ -21,7 +34,14 @@
 <h1>Service graph</h1>
 
 <noscript>This application requires javascript.</noscript>
-<div id="cytoscape-container"></div>
+<div id="layout-main">
+  <div id="layout-sidebar">
+    controls
+  </div>
+  <div id="layout-graph">
+    <div id="cytoscape-container"></div>
+  </div>
+</div>
 
 </body>
 </html>

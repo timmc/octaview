@@ -54,11 +54,14 @@ function collectElements() {
 function setupCytoscape() {
   app.cy = cytoscape({
     container: document.getElementById('cytoscape-container'),
+    userZoomingEnabled: false, // too choppy, set params anyhow
     minZoom: 1/8,
     maxZoom: 2,
     style: [{
       selector: 'node',
-      style:{content:'data(id)'}
+      style: {
+        content:'data(id)'
+      }
     },{
       selector: 'edge',
       style: {

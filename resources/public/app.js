@@ -1,6 +1,5 @@
 var app = {
-  descriptors: null,
-  descriptorsUrl: '/descriptors.json'
+  services: null
 };
 
 function collectElements() {
@@ -9,7 +8,7 @@ function collectElements() {
   // fill in missing node IDs at the end.
   var seenNodes = {};
 
-  $.each(app.descriptors.services, function(index, svc) {
+  $.each(app.services, function(index, svc) {
     var sid = svc.id;
     if(typeof sid != 'string') {
       console.error("Invalid service id at position " + index + ":", sid);
@@ -26,7 +25,7 @@ function collectElements() {
     seenNodes[sid] = true;
 
     $.each(svc.dependencies, function(_j, dep) {
-      var tid = dep.on;
+      var tid = dep.id;
       elems.push({
         group: "edges",
         data: {
@@ -66,14 +65,24 @@ function setupCytoscape() {
   });
 }
 
+function reportApiErrors(apiName, respData) {
+  if (respData.errors.length > 0) {
+    console.warn("Some errors when calling " + apiName + " api");
+    $.each(function(_i, err){
+      console.warn(err);
+    });
+  }
+}
+
 function init() {
   setupCytoscape();
   $.ajax({
     method: 'get',
-    url: app.descriptorsUrl,
+    url: '/api/services',
     dataType: 'json',
     success: function recvinit(data, _status, _xhr) {
-      app.descriptors = data;
+      reportApiErrors("services", data);
+      app.services = data.services;
       app.cy.add(collectElements()).layout({name: 'breadthfirst'});
     },
     error: function recvfail(_xhr, textStatus, errorThrown) {

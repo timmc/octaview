@@ -1,0 +1,6 @@
+{
+  "id": "polar",
+  "dependencies": [
+    {"id": "sun"}
+  ]
+}

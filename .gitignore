@@ -1,2 +1,11 @@
-/target/
-/descriptors.json
+# Lein build artifacts
+
+/target
+/pom.xml
+/pom.xml.asc
+/*.jar
+
+# Lein tmp files
+
+/.lein-*
+/.nrepl-port

@@ -1,0 +1,7 @@
+{
+  "id": "brown",
+  "dependencies": [
+    {"id": "spectacled"},
+    {"id": "polar"}
+  ]
+}

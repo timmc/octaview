@@ -1,0 +1,6 @@
+{
+  "id": "giant-panda",
+  "dependencies": [
+    {"id": "sun"}
+  ]
+}

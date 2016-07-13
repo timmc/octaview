@@ -74,8 +74,7 @@ function reportApiErrors(apiName, respData) {
   }
 }
 
-function init() {
-  setupCytoscape();
+function refreshGraphData() {
   $.ajax({
     method: 'get',
     url: '/api/services',
@@ -83,12 +82,18 @@ function init() {
     success: function recvinit(data, _status, _xhr) {
       reportApiErrors("services", data);
       app.services = data.services;
+      app.cy.remove('*');
       app.cy.add(collectElements()).layout({name: 'breadthfirst'});
     },
     error: function recvfail(_xhr, textStatus, errorThrown) {
       console.error(textStatus, errorThrown + "");
     }
   });
+}
+
+function init() {
+  setupCytoscape();
+  refreshGraphData();
 }
 
 $(init);

@@ -83,7 +83,7 @@ function refreshGraphData() {
       reportApiErrors("services", data);
       app.services = data.services;
       app.cy.remove('*');
-      app.cy.add(collectElements()).layout({name: 'breadthfirst'});
+      app.cy.add(collectElements()).layout({name: 'dagre'});
     },
     error: function recvfail(_xhr, textStatus, errorThrown) {
       console.error(textStatus, errorThrown + "");

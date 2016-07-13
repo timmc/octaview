@@ -6,4 +6,8 @@ Work in progress.
 lein run demo/settings.json
 ```
 
-© Brightcove, Inc. 2016, authored by Tim McCormack
+## License
+
+Source © Brightcove, Inc. 2016, authored by Tim McCormack; vendored
+libraries have other ownsership and licensing. See COPYING.md for
+details.

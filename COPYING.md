@@ -30,6 +30,22 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
+## Dagre
+
+MIT License
+
+## cytoscape-dagre
+
+MIT License
+
+## lodash
+
+MIT License
+
+## graphlib
+
+MIT License
+
 ## jQuery
 
 MIT License

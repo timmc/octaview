@@ -68,7 +68,7 @@ function setupCytoscape() {
 function reportApiErrors(apiName, respData) {
   if (respData.errors.length > 0) {
     console.warn("Some errors when calling " + apiName + " api");
-    $.each(function(_i, err){
+    $.each(respData.errors, function(_i, err){
       console.warn(err);
     });
   }

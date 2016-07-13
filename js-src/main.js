@@ -1,3 +1,8 @@
+(function appwrap(){
+
+var $ = require('jquery');
+var cytoscape = require('cytoscape');
+
 var app = {
   services: null
 };
@@ -97,3 +102,5 @@ function init() {
 }
 
 $(init);
+
+})();

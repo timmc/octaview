@@ -9,3 +9,11 @@
 
 /.lein-*
 /.nrepl-port
+
+# npm
+
+/node_modules
+
+# Artifacts of first-pass builders
+
+/resources/public/app.js

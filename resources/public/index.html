@@ -14,6 +14,10 @@
     width: 20%;
     }
 
+    #layout-sidebar > .hidden {
+    display: none;
+    }
+
     #layout-graph {
     float: right;
     width: 75%;
@@ -44,7 +48,8 @@
 <noscript>This application requires javascript.</noscript>
 <div id="layout-main">
   <div id="layout-sidebar">
-    controls
+    <div id="controls-tip">Select a node to view information about it.</div>
+    <div id="service-info" class="hidden"></div>
   </div>
   <div id="layout-graph">
     <div id="cytoscape-container"></div>

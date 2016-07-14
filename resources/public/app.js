@@ -3,6 +3,38 @@ var app = {
   services: {}
 };
 
+var defaultLinkNames = {
+  'doc': 'Documentation',
+  'source': 'Source code',
+  'monitor': 'Monitoring/metrics'
+}
+
+function linkName(link) {
+  return link.name || defaultLinkNames[link.type] || '[some sort of information]';
+}
+
+/**
+ * Show a service's info in the sidebar, given a service ID.
+ */
+function showServiceInfo(sid) {
+  var svc = app.services[sid];
+  if (!svc) return;
+
+  var $info = $('#service-info')
+  $info.empty()
+  $('<h2>').text(svc.name).appendTo($info)
+  var $links = $('<ul>')
+  $.each(svc.links, function linkit(_i, link) {
+    $('<a>').attr('href', link.url).text(linkName(link))
+    .wrap('<li>').parent().addClass('ltype-'+link.type)
+    .appendTo($links)
+  })
+  $links.appendTo($info)
+
+  $('#controls-tip').addClass('hidden')
+  $info.removeClass('hidden')
+}
+
 function collectElements() {
   var elems = [];
   // Mark node IDs as seen or not seen (but at least referenced) so we can
@@ -44,7 +76,7 @@ function collectElements() {
 
 function setupCytoscape() {
   app.cy = cytoscape({
-    container: document.getElementById('cytoscape-container'),
+    container: $('#cytoscape-container'),
     userZoomingEnabled: false, // too choppy, set params anyhow
     minZoom: 1/8,
     maxZoom: 2,
@@ -98,6 +130,9 @@ function refreshGraphData() {
 function init() {
   setupCytoscape();
   refreshGraphData();
+  app.cy.on('tap', 'node', function(evt) {
+    showServiceInfo(evt.cyTarget.id())
+  })
 }
 
 $(init);

@@ -12,8 +12,22 @@
   services-routes
   (route/resources "/" {:root "public"}))
 
+(defn wrap-cache-vendored
+  "Middleware to mark vendored libraries for caching, since they
+include version strings."
+  [handler]
+  (fn handle
+    [request]
+    (let [response (handler request)]
+      (if (.startsWith (:uri request) "/vendor/")
+        (assoc-in response
+                  [:headers "Cache-Control"]
+                  "max-age=900")
+        response))))
+
 (def app "Server entrance point."
-  (handler/site all-routes))
+  (-> (handler/site all-routes)
+      (wrap-cache-vendored)))
 
 (defn start-server
   "Start server. Call .stop on return value to stop server."

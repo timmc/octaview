@@ -1,14 +1,23 @@
+/**
+ * Application state data.
+ */
 var app = {
   // Map of service IDs to service maps
   services: {}
 };
 
+/**
+ * Default names for service links when no name is specified.
+ */
 var defaultLinkNames = {
   'doc': 'Documentation',
   'source': 'Source code',
   'monitor': 'Monitoring/metrics'
 }
 
+/**
+ * Given a link map, produce the best name available (fall back to defaults.)
+ */
 function linkName(link) {
   return link.name || defaultLinkNames[link.type] || '[some sort of information]';
 }
@@ -35,13 +44,16 @@ function showServiceInfo(sid) {
   $info.removeClass('hidden')
 }
 
-function collectElements() {
+/**
+ * Given the service map, produce a collection of Cytoscape elements to graph.
+ */
+function collectCytoElements(serviceMap) {
   var elems = [];
   // Mark node IDs as seen or not seen (but at least referenced) so we can
   // fill in missing node IDs at the end.
   var seenNodes = {};
 
-  $.each(app.services, function(sid, svc) {
+  $.each(serviceMap, function(sid, svc) {
     elems.push({
       group: "nodes",
       data: {id: sid}
@@ -74,21 +86,9 @@ function collectElements() {
   return elems;
 }
 
-function setupCytoscape() {
-  app.cy = cytoscape({
-    container: $('#cytoscape-container'),
-    userZoomingEnabled: false, // too choppy, set params anyhow
-    minZoom: 1/8,
-    maxZoom: 2,
-    style: [{
-      selector: 'node',
-      style: {
-        content:'data(id)'
-      }
-    }]
-  });
-}
-
+/**
+ * Given an API name and the response data, print any errors to the console.
+ */
 function reportApiErrors(apiName, respData) {
   if (respData.errors.length > 0) {
     console.warn("Some errors when calling " + apiName + " api");
@@ -98,7 +98,10 @@ function reportApiErrors(apiName, respData) {
   }
 }
 
-function refreshGraphData() {
+/**
+ * Load new data and redisplay it.
+ */
+function refreshData() {
   $.ajax({
     method: 'get',
     url: 'api/services',
@@ -119,7 +122,7 @@ function refreshGraphData() {
         app.services[sid] = svc
       })
       app.cy.remove('*');
-      app.cy.add(collectElements()).layout({name: 'dagre'});
+      app.cy.add(collectCytoElements(app.services)).layout({name: 'dagre'});
     },
     error: function recvfail(_xhr, textStatus, errorThrown) {
       console.error(textStatus, errorThrown + "");
@@ -127,12 +130,33 @@ function refreshGraphData() {
   });
 }
 
-function init() {
-  setupCytoscape();
-  refreshGraphData();
+/**
+ * Initialize cytoscape -- call only once.
+ */
+function initCytoscape() {
+  app.cy = cytoscape({
+    container: $('#cytoscape-container'),
+    userZoomingEnabled: false, // too choppy, set params anyhow
+    minZoom: 1/8,
+    maxZoom: 2,
+    style: [{
+      selector: 'node',
+      style: {
+        content:'data(id)'
+      }
+    }]
+  });
   app.cy.on('tap', 'node', function(evt) {
     showServiceInfo(evt.cyTarget.id())
   })
+}
+
+/**
+ * Initialize application -- call only once.
+ */
+function init() {
+  initCytoscape();
+  refreshData();
 }
 
 $(init);

@@ -17,9 +17,19 @@ Support the following interactions:
 
 Represent and display the following types of information:
 
-- Types of dependencies (on/off request-path, sync/async, http/other,
-  un/cached, read/write, network/localhost/in-process, via
-  client/server/no load balancer, call vs. enqueue for)
+- Types of dependencies:
+    - Direct call vs. communication through a queue (for the latter,
+      is that a directed dependency? which direction?)
+    - Data flow and freshness: Cached or not; read and/or write
+    - Relationship with other dependencies: Calls made to serve
+      inbound dependencies (request-path calls) vs. for maintaining
+      service stability (e.g. signing keys)
+    - Sync/async calls (async might include backfilling a cache, or
+      fetching signing keys)
+    - Format: HTTP, database connections, etc.
+    - Locality: Across the network vs. local call vs. in-process
+    - Intermediation: Via client-side or server-side load balancer, or
+      no load-balancer at all
 - Environments and variants of each service (which datacenter, which
   environment (qa/prod), which data partition if applicable)
 - Server tags, genders, etc. -- how to locate them in an environment

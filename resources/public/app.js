@@ -1,5 +1,6 @@
 var app = {
-  services: null
+  // Map of service IDs to service maps
+  services: {}
 };
 
 function collectElements() {
@@ -8,16 +9,7 @@ function collectElements() {
   // fill in missing node IDs at the end.
   var seenNodes = {};
 
-  $.each(app.services, function(index, svc) {
-    var sid = svc.id;
-    if(typeof sid != 'string') {
-      console.error("Invalid service id at position " + index + ":", sid);
-      return;
-    }
-    if(seenNodes[sid]) {
-      console.error("Duplicate service id:", sid);
-      return;
-    }
+  $.each(app.services, function(sid, svc) {
     elems.push({
       group: "nodes",
       data: {id: sid}
@@ -81,7 +73,19 @@ function refreshGraphData() {
     dataType: 'json',
     success: function recvinit(data, _status, _xhr) {
       reportApiErrors("services", data);
-      app.services = data.services;
+      app.services = {}
+      $.each(data.services, function(index, svc) {
+        var sid = svc.id
+        if(typeof sid != 'string') {
+          console.error("Invalid service id at position " + index + ":", sid)
+          return
+        }
+        if(app.services[sid]) {
+          console.error("Duplicate service id:", sid)
+          return
+        }
+        app.services[sid] = svc
+      })
       app.cy.remove('*');
       app.cy.add(collectElements()).layout({name: 'dagre'});
     },

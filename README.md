@@ -8,6 +8,13 @@ lein run demo/settings.json
 
 ## TODO
 
+Support the following interactions:
+
+- "What is this service? Where can I find docs, source, monitoring?"
+- "Show me only the things on the paths between A and B"
+- "At a glance, are there any services with monitor alerts, and are
+  they related?"
+
 Represent and display the following types of information:
 
 - Types of dependencies (on/off request-path, sync/async, http/other,

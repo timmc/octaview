@@ -69,7 +69,7 @@ function reportApiErrors(apiName, respData) {
 function refreshGraphData() {
   $.ajax({
     method: 'get',
-    url: '/api/services',
+    url: 'api/services',
     dataType: 'json',
     success: function recvinit(data, _status, _xhr) {
       reportApiErrors("services", data);

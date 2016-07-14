@@ -31,8 +31,16 @@ function showServiceInfo(sid) {
 
   var $info = $('#service-info')
   $info.empty()
-  $('<h2>').text(svc.name).appendTo($info)
-  $('<p>').text(svc.desc || '(no description)').appendTo($info)
+
+  $('<h2>').text(svc.name)
+  .appendTo($info)
+
+  $('<p>').addClass('desc').text(svc.desc || '(no description)')
+  .appendTo($info)
+
+  $('<p>').addClass('team').text('Team: ' + (svc.team || '(unknown)'))
+  .appendTo($info)
+
   var $links = $('<ul>')
   $.each(svc.links, function linkit(_i, link) {
     $('<a>').attr('href', link.url).text(linkName(link))

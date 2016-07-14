@@ -6,6 +6,12 @@
   (:import (java.io File)))
 
 (defn read-one-descriptor
+  "Read a service descriptor from disk, yielding one of:
+
+- [:service <Map>] on success
+- [:error {:error_code <String>,
+           :error_subcode <String?>,
+           :message <String>}]"
   [^File f]
   (try
     (let [data (json/parse-string (slurp f :encoding "UTF-8") false)]
@@ -24,6 +30,8 @@
                :message (str "Could not read: " (.getName f))}])))
 
 (defn read-service-descriptors
+  "Read all service descriptors, yielding coll of service-or-error
+values (see read-one-descriptor)."
   []
   (let [d (config/resolve-rel-settings (cnf :descriptors-dir))]
     (for [f (.listFiles d)
@@ -31,10 +39,14 @@
       (read-one-descriptor f))))
 
 (defn services-data
+  "Produce a map of :services (list of service maps), :errors (for
+services that could not be loaded or validated),
+and :data-timestamp-ms (an approximate timestamp of data age.)"
   []
   (let [by-status (group-by first (read-service-descriptors))]
     {:services (map second (:service by-status))
-     :errors (map second (:error by-status))}))
+     :errors (map second (:error by-status))
+     :data-timestamp-ms (System/currentTimeMillis)}))
 
 (defroutes services-routes
   ;; JSON map of:

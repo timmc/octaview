@@ -15,12 +15,27 @@ var app = {
   }
 };
 
+/**
+ * Modal interaction specs, by id:
+ * - name: Short name of mode
+ * - desc: One-line description of mode
+ * - onGraphLayout: Setup function that is called when a new graph is loaded,
+ *   or null
+ * - onEnter: Function that is called when mode is entered, or null
+ * - onExit: Function that is called when mode is exited, or null
+ */
 var modeInfo = {
   explore: {
     name: 'Explore',
     desc: 'Inspect individual services by clicking on them',
-    start: null,
-    stop: null
+    onGraphLayout: function() {
+      app.cy.on('tap', 'node', function(evt) {
+        if (app.mode.selected !== 'explore') return;
+        showServiceInfo(evt.cyTarget.id());
+      })
+    },
+    onEnter: null,
+    onExit: null
   }
 }
 
@@ -29,10 +44,10 @@ var modeInfo = {
  */
 function performModeSwitch(fromModeId, toModeId) {
   if (fromModeId) {
-    (modeInfo[fromModeId].stop || $.noop)();
+    (modeInfo[fromModeId].onExit || $.noop)();
   }
   app.mode.selected = toModeId;
-  (modeInfo[toModeId].start || $.noop)();
+  (modeInfo[toModeId].onEnter || $.noop)();
 }
 
 /**
@@ -161,6 +176,9 @@ function refreshData() {
       })
       app.cy.remove('*');
       app.cy.add(collectCytoElements(app.services)).layout({name: 'dagre'});
+      $.each(modeInfo, function(modeId, modeInfo) {
+        (modeInfo.onGraphLayout || $.noop)();
+      });
     },
     error: function recvfail(_xhr, textStatus, errorThrown) {
       console.error(textStatus, errorThrown + "");
@@ -184,9 +202,6 @@ function initCytoscape() {
       }
     }]
   });
-  app.cy.on('tap', 'node', function(evt) {
-    showServiceInfo(evt.cyTarget.id())
-  })
 }
 
 /**

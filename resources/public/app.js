@@ -105,10 +105,13 @@ function explore_redisplay(state) {
 function paths_redisplay(state) {
   app.cy.$('node').removeClass('paths-focal');
   app.cy.$('node').removeClass('paths-other');
+  app.cy.$('*').removeClass('paths-between');
   if (state.focal) {
     app.cy.$('#' + state.focal).addClass('paths-focal');
     if (state.other) {
       app.cy.$('#' + state.other).addClass('paths-other');
+      app.cy.$('*').dijkstra({root:'#'+state.focal, directed: true})
+      .pathTo('#'+state.other).addClass('paths-between');
     }
   }
 }
@@ -169,7 +172,7 @@ var modeInfo = {
   },
   paths: {
     name: 'Pathfinder',
-    desc: 'Discover all paths between two services (click first on focal service, then successively on other services)',
+    desc: 'Discover *one* paths between two services (click first on focal service, then successively on other services) -- TODO discover all paths',
     onGraphLayout: function() {
       app.cy.on('tap', 'node', function(evt) {
         if (app.mode.selected !== 'paths') return;
@@ -306,6 +309,12 @@ function initCytoscape() {
     },
     // mode: paths
     {
+      selector: 'edge.paths-between',
+      style: {'line-color': '#0dc'}
+    }, {
+      selector: 'node.paths-between',
+      style: {'background-color': '#0dc'}
+    }, {
       selector: 'node.paths-focal',
       style: {
         'background-color': 'blue'
@@ -313,7 +322,7 @@ function initCytoscape() {
     }, {
       selector: 'node.paths-other',
       style: {
-        'background-color': '#0dc'
+        'background-color': 'green'
       }
     }]
   });

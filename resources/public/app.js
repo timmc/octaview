@@ -57,27 +57,27 @@ function linkName(link) {
 function showServiceInfo(sid) {
   var svc = app.services[sid] || {};
 
-  var $info = $('#service-info')
-  $info.empty()
+  var $info = $('#service-info');
+  $info.empty();
 
   $('<h2>').text(svc.name || sid)
-  .appendTo($info)
+  .appendTo($info);
 
   $('<p>').addClass('desc').text(svc.desc || '(no description)')
-  .appendTo($info)
+  .appendTo($info);
 
   $('<p>').addClass('team').text('Team: ' + (svc.team || '(unknown)'))
-  .appendTo($info)
+  .appendTo($info);
 
-  var $links = $('<ul>')
+  var $links = $('<ul>');
   $.each(svc.links, function linkit(_i, link) {
     $('<a>').attr('href', link.url).text(linkName(link))
     .wrap('<li>').parent().addClass('ltype-'+link.type)
     .appendTo($links)
-  })
-  $links.appendTo($info)
+  });
+  $links.appendTo($info);
 
-  $info.removeClass('hidden')
+  $info.removeClass('hidden');
 }
 
 /**
@@ -254,18 +254,18 @@ function refreshData() {
     dataType: 'json',
     success: function recvinit(data, _status, _xhr) {
       reportApiErrors("services", data);
-      app.services = {}
+      app.services = {};
       $.each(data.services, function(index, svc) {
-        var sid = svc.id
+        var sid = svc.id;
         if(typeof sid != 'string') {
-          console.error("Invalid service id at position " + index + ":", sid)
-          return
+          console.error("Invalid service id at position " + index + ":", sid);
+          return;
         }
         if(app.services[sid]) {
-          console.error("Duplicate service id:", sid)
-          return
+          console.error("Duplicate service id:", sid);
+          return;
         }
-        app.services[sid] = svc
+        app.services[sid] = svc;
       })
       app.cy.remove('*');
       app.cy.add(collectCytoElements(app.services)).layout({name: 'dagre'});
@@ -346,7 +346,7 @@ function initCytoscape() {
 }
 
 function initModeSelector() {
-  var $modeSel = $('#mode-selector')
+  var $modeSel = $('#mode-selector');
   $.each(modeInfo, function(id, info) {
     var $radio = $('<input>')
     .attr({type: 'radio',

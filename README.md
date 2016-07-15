@@ -14,11 +14,16 @@ Work in progress.
   description, dependencies, and URLs
 - Octaview serves a website with an interactive graph
 - The graph shows directed dependencies between labeled services
-- Clicking on a service shows its information in a sidebar
+- In **Explore** mode, clicking on a service shows its information in a
+  sidebar
+- In **Pathfinder** mode, clicking on two services will show the
+  dependency chain from the first to the second
 
 ## Demo
 
-After installing the Leiningen build tool for Clojure:
+After installing the [Leiningen][lein] build tool for Clojure:
+
+[lein]: https://leiningen.org/
 
 ```bash
 lein run demo/settings.json

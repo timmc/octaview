@@ -299,6 +299,12 @@ function initCytoscape() {
       style: {
         'background-color': '#aaa' // don't show selection by default
       }
+    }, {
+      selector: 'edge',
+      style: {
+        'target-arrow-shape': 'triangle',
+        'curve-style': 'bezier'
+      }
     },
     // mode: explore
     {

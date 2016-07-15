@@ -29,6 +29,7 @@ function performModeSwitch(fromModeId, toModeId) {
     (modeInfo[fromModeId].onExit || $.noop)();
   }
   app.mode.selected = toModeId;
+  $('#mode-tip').text(modeInfo[toModeId].desc);
   (modeInfo[toModeId].onEnter || $.noop)();
 }
 
@@ -75,7 +76,6 @@ function showServiceInfo(sid) {
   })
   $links.appendTo($info)
 
-  $('#controls-tip').addClass('hidden')
   $info.removeClass('hidden')
 }
 

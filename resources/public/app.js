@@ -3,8 +3,37 @@
  */
 var app = {
   // Map of service IDs to service maps
-  services: {}
+  services: {},
+  // Interaction modes
+  mode: {
+    // Current mode ID, never null (even/especially at init)
+    selected: 'explore',
+    // State for each mode
+    state: {
+      explore: {}
+    }
+  }
 };
+
+var modeInfo = {
+  explore: {
+    name: 'Explore',
+    desc: 'Inspect individual services by clicking on them',
+    start: null,
+    stop: null
+  }
+}
+
+/**
+ * Respond to a user's request for a mode-switch.
+ */
+function performModeSwitch(fromModeId, toModeId) {
+  if (fromModeId) {
+    (modeInfo[fromModeId].stop || $.noop)();
+  }
+  app.mode.selected = toModeId;
+  (modeInfo[toModeId].start || $.noop)();
+}
 
 /**
  * Default names for service links when no name is specified.
@@ -166,6 +195,7 @@ function initCytoscape() {
 function init() {
   initCytoscape();
   refreshData();
+  performModeSwitch(null, 'explore');
 }
 
 $(init);

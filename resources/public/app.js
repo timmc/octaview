@@ -1,3 +1,5 @@
+(function(){
+
 /**
  * Application state data.
  */
@@ -374,4 +376,18 @@ function init() {
   performModeSwitch(null, 'explore');
 }
 
+// Attach API references for debugging
+app.dbgfns = {};
+$.each(
+  [performModeSwitch, linkName, showServiceInfo, hideServiceInfo,
+   explore_redisplay, paths_redisplay, collectCytoElements, reportApiErrors,
+   refreshData, initCytoscape, initModeSelector, init],
+  function attach(_i, f) {
+    app.dbgfns[f.name] = f;
+  }
+);
+window.octaview = app;
+
 $(init);
+
+})();

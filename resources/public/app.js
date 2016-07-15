@@ -26,10 +26,10 @@ var app = {
  */
 function performModeSwitch(fromModeId, toModeId) {
   if (fromModeId) {
-    (modeInfo[fromModeId].stop || $.noop)();
+    (modeInfo[fromModeId].onExit || $.noop)();
   }
   app.mode.selected = toModeId;
-  (modeInfo[toModeId].start || $.noop)();
+  (modeInfo[toModeId].onEnter || $.noop)();
 }
 
 /**
@@ -185,17 +185,6 @@ var modeInfo = {
       paths_redisplay({});
     }
   }
-}
-
-/**
- * Respond to a user's request for a mode-switch.
- */
-function performModeSwitch(fromModeId, toModeId) {
-  if (fromModeId) {
-    (modeInfo[fromModeId].onExit || $.noop)();
-  }
-  app.mode.selected = toModeId;
-  (modeInfo[toModeId].onEnter || $.noop)();
 }
 
 /**

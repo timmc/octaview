@@ -302,8 +302,16 @@ function initCytoscape() {
     }, {
       selector: 'edge',
       style: {
-        'target-arrow-shape': 'triangle',
-        'curve-style': 'bezier'
+        'line-color': '#aaa',
+        'curve-style': 'bezier',
+        'target-arrow-color': '#aaa',
+        'target-arrow-shape': 'triangle'
+      }
+    }, {
+      selector: 'edge:selected',
+      style: {
+        'line-color': '#aaa', // don't show selection by default
+        'target-arrow-color': '#aaa'
       }
     },
     // mode: explore
@@ -316,7 +324,10 @@ function initCytoscape() {
     // mode: paths
     {
       selector: 'edge.paths-between',
-      style: {'line-color': '#0dc'}
+      style: {
+        'line-color': '#0dc',
+        'target-arrow-color': '#0dc'
+      }
     }, {
       selector: 'node.paths-between',
       style: {'background-color': '#0dc'}

@@ -136,7 +136,6 @@ function paths_onTap(sid) {
       state.other = null; // init, just in case
     }
   }
-  console.log(state.focal, state.other);
   paths_redisplay(state);
 }
 

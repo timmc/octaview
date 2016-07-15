@@ -10,44 +10,26 @@ var app = {
     selected: 'explore',
     // State for each mode
     state: {
-      explore: {}
+      explore: {
+        focal: null
+      },
+      paths: {
+        focal: null,
+        other: null
+      }
     }
   }
 };
-
-/**
- * Modal interaction specs, by id:
- * - name: Short name of mode
- * - desc: One-line description of mode
- * - onGraphLayout: Setup function that is called when a new graph is loaded,
- *   or null
- * - onEnter: Function that is called when mode is entered, or null
- * - onExit: Function that is called when mode is exited, or null
- */
-var modeInfo = {
-  explore: {
-    name: 'Explore',
-    desc: 'Inspect individual services by clicking on them',
-    onGraphLayout: function() {
-      app.cy.on('tap', 'node', function(evt) {
-        if (app.mode.selected !== 'explore') return;
-        showServiceInfo(evt.cyTarget.id());
-      })
-    },
-    onEnter: null,
-    onExit: null
-  }
-}
 
 /**
  * Respond to a user's request for a mode-switch.
  */
 function performModeSwitch(fromModeId, toModeId) {
   if (fromModeId) {
-    (modeInfo[fromModeId].onExit || $.noop)();
+    (modeInfo[fromModeId].stop || $.noop)();
   }
   app.mode.selected = toModeId;
-  (modeInfo[toModeId].onEnter || $.noop)();
+  (modeInfo[toModeId].start || $.noop)();
 }
 
 /**
@@ -95,6 +77,125 @@ function showServiceInfo(sid) {
 
   $('#controls-tip').addClass('hidden')
   $info.removeClass('hidden')
+}
+
+/**
+ * Hide service info panel.
+ */
+function hideServiceInfo() {
+  $('#service-info').addClass('hidden');
+}
+
+/**
+ * Redisplay the UI from explore mode state.
+ */
+function explore_redisplay(state) {
+  app.cy.$('*').removeClass('explore-focal');
+  if (state.focal) {
+    app.cy.$('#'+state.focal).addClass('explore-focal');
+    showServiceInfo(state.focal);
+  } else {
+    hideServiceInfo();
+  }
+}
+
+/**
+ * Redisplay the UI from paths mode state.
+ */
+function paths_redisplay(state) {
+  app.cy.$('*').removeClass('paths-focal');
+  app.cy.$('*').removeClass('paths-other');
+  if (state.focal) {
+    app.cy.$('#' + state.focal).addClass('paths-focal');
+    if (state.other) {
+      app.cy.$('#' + state.other).addClass('paths-other');
+    }
+  }
+}
+
+/**
+ * React when user clicks on a service in paths mode.
+ */
+function paths_onTap(sid) {
+  var state = app.mode.state.paths;
+  if (sid === state.focal) { // unfocus all
+    state.focal = null;
+    state.other = null;
+  } else if (sid == state.other) { // unfocus "other" node
+    // Assume we have a focal
+    state.other = null;
+  } else { // An uninvolved node!
+    if (state.focal) { // switch to new "other"
+      state.other = sid;
+    } else {
+      state.focal = sid;
+      state.other = null; // init, just in case
+    }
+  }
+  console.log(state.focal, state.other);
+  paths_redisplay(state);
+}
+
+/**
+ * Modal interaction specs, by id:
+ * - name: Short name of mode
+ * - desc: One-line description of mode
+ * - onGraphLayout: Setup function that is called when a new graph is loaded,
+ *   or null
+ * - onEnter: Function that is called when mode is entered, or null
+ * - onExit: Function that is called when mode is exited, or null
+ *
+ * Awkwardly, all modes are always listening to various events, so their
+ * listeners have to have guard clauses switched on the current mode id.
+ */
+var modeInfo = {
+  explore: {
+    name: 'Explore',
+    desc: 'Inspect individual services by clicking on them',
+    onGraphLayout: function() {
+      app.cy.on('tap', 'node', function(evt) {
+        if (app.mode.selected !== 'explore') return;
+        var state = app.mode.state.explore;
+        state.focal = evt.cyTarget.id();
+        explore_redisplay(state);
+      })
+    },
+    onEnter: function() {
+      explore_redisplay(app.mode.state.explore);
+    },
+    onExit: function() {
+      explore_redisplay({});
+    }
+  },
+  paths: {
+    name: 'Pathfinder',
+    desc: 'Discover all paths between two services (click first on focal service, then successively on other services)',
+    onGraphLayout: function() {
+      app.cy.on('tap', 'node', function(evt) {
+        if (app.mode.selected !== 'paths') return;
+        paths_onTap(evt.cyTarget.id());
+      });
+    },
+    // Restore UI from state
+    onEnter: function() {
+      paths_redisplay(app.mode.state.paths);
+    },
+    // Clear UI with default state
+    onExit: function() {
+      paths_redisplay({});
+    }
+  }
+}
+
+/**
+ * Respond to a user's request for a mode-switch.
+ */
+function performModeSwitch(fromModeId, toModeId) {
+  if (fromModeId) {
+    (modeInfo[fromModeId].onExit || $.noop)();
+  }
+  app.mode.selected = toModeId;
+  (modeInfo[toModeId].onEnter || $.noop)();
 }
 
 /**
@@ -198,16 +299,62 @@ function initCytoscape() {
     style: [{
       selector: 'node',
       style: {
-        content:'data(id)'
+        content:'data(id)',
+        'background-color': '#aaa'
+      }
+    }, {
+      selector: 'node:selected',
+      style: {
+        'background-color': '#aaa' // don't show selection by default
+      }
+    },
+    // mode: explore
+    {
+      selector: 'node.explore-focal',
+      style: {
+        'background-color': 'blue'
+      }
+    },
+    // mode: paths
+    {
+      selector: 'node.paths-focal',
+      style: {
+        'background-color': 'green'
+      }
+    }, {
+      selector: 'node.paths-other',
+      style: {
+        'background-color': 'red'
       }
     }]
   });
+}
+
+function initModeSelector() {
+  var $modeSel = $('#mode-selector')
+  $.each(modeInfo, function(id, info) {
+    $('<input>')
+    .attr({type: 'radio',
+           name: 'mode',
+           title: info.desc,
+           checked: id === app.mode.selected})
+    .change(function(e) {
+      performModeSwitch(app.mode.selected, id);
+      $(e.target).blur();
+    })
+    .wrap('<label>')
+    .parent()
+    .addClass('mode')
+    .append(document.createTextNode(info.name))
+    .appendTo($modeSel);
+  })
 }
 
 /**
  * Initialize application -- call only once.
  */
 function init() {
+  initModeSelector();
   initCytoscape();
   refreshData();
   performModeSwitch(null, 'explore');

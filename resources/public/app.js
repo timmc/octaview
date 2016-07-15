@@ -308,12 +308,12 @@ function initCytoscape() {
     {
       selector: 'node.paths-focal',
       style: {
-        'background-color': 'green'
+        'background-color': 'blue'
       }
     }, {
       selector: 'node.paths-other',
       style: {
-        'background-color': 'red'
+        'background-color': '#0dc'
       }
     }]
   });

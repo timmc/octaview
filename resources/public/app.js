@@ -257,7 +257,7 @@ function refreshData() {
       app.services = {};
       $.each(data.services, function(index, svc) {
         var sid = svc.id;
-        if(typeof sid != 'string') {
+        if(typeof sid != 'string' || sid === '') {
           console.error("Invalid service id at position " + index + ":", sid);
           return;
         }

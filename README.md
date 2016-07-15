@@ -1,7 +1,10 @@
 # octaview
 
-Untangle your jungle of microservice dependencies. (Named for Marie
-Octavie Coudreau, who explored the Amazon jungle from 1899 to 1906.)
+Untangle your jungle of microservice dependencies. (Named for
+[Marie Octavie Coudreau][wp-marie], who explored the Amazon jungle
+from 1899 to 1906.)
+
+[wp-marie]: https://en.wikipedia.org/wiki/Octavie_Coudreau
 
 ## Status
 

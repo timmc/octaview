@@ -90,7 +90,7 @@ function hideServiceInfo() {
  * Redisplay the UI from explore mode state.
  */
 function explore_redisplay(state) {
-  app.cy.$('*').removeClass('explore-focal');
+  app.cy.$('node').removeClass('explore-focal');
   if (state.focal) {
     app.cy.$('#'+state.focal).addClass('explore-focal');
     showServiceInfo(state.focal);
@@ -103,8 +103,8 @@ function explore_redisplay(state) {
  * Redisplay the UI from paths mode state.
  */
 function paths_redisplay(state) {
-  app.cy.$('*').removeClass('paths-focal');
-  app.cy.$('*').removeClass('paths-other');
+  app.cy.$('node').removeClass('paths-focal');
+  app.cy.$('node').removeClass('paths-other');
   if (state.focal) {
     app.cy.$('#' + state.focal).addClass('paths-focal');
     if (state.other) {

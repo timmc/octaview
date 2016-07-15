@@ -1,6 +1,21 @@
-# octaview: Graphing microservice dependencies
+# octaview
+
+Untangle your jungle of microservice dependencies. (Named for Marie
+Octavie Coudreau, who explored the Amazon jungle from 1899 to 1906.)
+
+## Status
 
 Work in progress.
+
+- Describe your services as a collection of JSON files: ID, name,
+  description, dependencies, and URLs
+- Octaview serves a website with an interactive graph
+- The graph shows directed dependencies between labeled services
+- Clicking on a service shows its information in a sidebar
+
+## Demo
+
+After installing the Leiningen build tool for Clojure:
 
 ```bash
 lein run demo/settings.json

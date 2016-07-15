@@ -1,8 +1,8 @@
-(ns app-2542.api.services
+(ns octaview.api.services
   "API endpoints for loading services."
   (:require [cheshire.core :as json]
             [compojure.core :refer [defroutes GET]]
-            [app-2542.config :as config :refer [cnf]])
+            [octaview.config :as config :refer [cnf]])
   (:import (java.io File)))
 
 (defn read-one-descriptor

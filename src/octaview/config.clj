@@ -1,4 +1,4 @@
-(ns app-2542.config
+(ns octaview.config
   (:require [cheshire.core :as json])
   (:import (java.io File)))
 

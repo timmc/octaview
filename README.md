@@ -1,4 +1,4 @@
-# app-2542: Graphing microservice dependencies
+# octaview: Graphing microservice dependencies
 
 Work in progress.
 

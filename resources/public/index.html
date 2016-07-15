@@ -2,9 +2,19 @@
 <html lang="en">
 <head>
   <meta charset='utf-8'>
-  <title>Service graph</title>
+  <title>Octaview service graph</title>
 
   <style>
+    body {
+    font-family: Helvetica;
+    }
+
+    #banner {
+    font-family: Helvetica;
+    font-style: italic;
+    margin: 0.2em;
+    }
+
     #layout-main {
     position: relative;
     }
@@ -13,6 +23,10 @@
     border: 1px solid #ccc;
     padding: 0.3em;
     margin: 0.3em;
+    }
+
+    #mode-selector > .header {
+    font-weight: bold;
     }
 
     #mode-selector > .mode {
@@ -26,6 +40,10 @@
 
     #layout-sidebar > .hidden {
     display: none;
+    }
+
+    #mode-tip {
+    border-bottom: 1px solid #999;
     }
 
     #layout-graph {
@@ -53,11 +71,12 @@
 </head>
 <body>
 
-<h1>Service graph</h1>
+<h1 id="banner">Octaview service graph</h1>
 
 <noscript>This application requires javascript.</noscript>
 <div id="layout-main">
-  <div id="mode-selector"></div>
+  <div id="mode-selector">
+    <span class="header">Mode</span>:</div>
   <div id="layout-sidebar">
     <div id="mode-tip"></div>
     <div id="service-info" class="hidden"></div>

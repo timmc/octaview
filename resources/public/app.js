@@ -173,7 +173,7 @@ var modeInfo = {
   },
   paths: {
     name: 'Pathfinder',
-    desc: 'Discover *one* paths between two services (click first on focal service, then successively on other services) -- TODO discover all paths',
+    desc: 'Discover *one* path between two services (click first on focal service, then successively on other services)',
     onGraphLayout: function() {
       app.cy.on('tap', 'node', function(evt) {
         if (app.mode.selected !== 'paths') return;
@@ -349,20 +349,22 @@ function initCytoscape() {
 function initModeSelector() {
   var $modeSel = $('#mode-selector')
   $.each(modeInfo, function(id, info) {
-    $('<input>')
+    var $radio = $('<input>')
     .attr({type: 'radio',
            name: 'mode',
-           title: info.desc,
            checked: id === app.mode.selected})
     .change(function(e) {
       performModeSwitch(app.mode.selected, id);
       $(e.target).blur();
-    })
-    .wrap('<label>')
-    .parent()
+    });
+
+    var $label = $('<label>')
     .addClass('mode')
-    .append(document.createTextNode(info.name))
-    .appendTo($modeSel);
+    .attr('title', info.desc)
+    .append($radio)
+    .append(document.createTextNode(info.name));
+
+    $modeSel.append($label);
   })
 }
 

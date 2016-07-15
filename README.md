@@ -29,6 +29,67 @@ After installing the [Leiningen][lein] build tool for Clojure:
 lein run demo/settings.json
 ```
 
+## Format and example
+
+Each service descriptor is a JSON file in a directory. The JSON data
+structure is:
+
+- `id`: A short, readable, unique ID string made of `[a-zA-Z0-9_-]+`,
+  conventionally used as the filename as well. This is the only
+  required field.
+- `name`: Name of the service
+- `desc`: Longer description (no formatting provided)
+- `attrs`: Map of additional machine-readable key-value
+  pairs. Suggested keys:
+    - `team`: Canonicalized name of the team that maintains this service
+- `dependencies`: Array of dependency maps with the following structure:
+    - `id`: ID of another service this one depends on
+- `links`: Array of link maps providing more information about the
+  service, with the following structure:
+    - `type`: Type of link, one of `doc` (documentation, a catch-all
+      category), `source` (source code), or `monitor` (dashboards,
+      alerts, graphs).
+    - `name`: Text of link
+    - `url`: URL of link (required)
+
+Silly example:
+
+```json
+{
+  "id": "dnaas",
+  "name": "/dev/null",
+  "desc": "Hosted instance of /dev/null-as-a-service",
+  "attrs": {"team": "Deletion"},
+  "dependencies": [
+    {
+      "id": "delete-auditor"
+    },
+    {
+      "id": "trashdb"
+    },
+    {
+      "id": "zookeeper"
+    }
+  ],
+  "links": [
+    {
+      "type": "doc",
+      "name": "Operator manual",
+      "url": "https://intranet.example.com/19856195"
+    },
+    {
+      "type": "source",
+      "url": "https://github.com/example/example"
+    },
+    {
+      "type": "monitor",
+      "name": "Graphs",
+      "url": "https://example.datadoghq.com/dash/31337/thing"
+    }
+  ]
+}
+```
+
 ## TODO
 
 Support the following interactions:

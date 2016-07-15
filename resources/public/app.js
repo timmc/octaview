@@ -53,13 +53,12 @@ function linkName(link) {
  * Show a service's info in the sidebar, given a service ID.
  */
 function showServiceInfo(sid) {
-  var svc = app.services[sid];
-  if (!svc) return;
+  var svc = app.services[sid] || {};
 
   var $info = $('#service-info')
   $info.empty()
 
-  $('<h2>').text(svc.name)
+  $('<h2>').text(svc.name || sid)
   .appendTo($info)
 
   $('<p>').addClass('desc').text(svc.desc || '(no description)')

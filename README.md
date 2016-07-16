@@ -123,6 +123,6 @@ Represent and display the following types of information:
 
 ## License
 
-Source © Brightcove, Inc. 2016, authored by Tim McCormack; vendored
-libraries have other ownsership and licensing. See COPYING.md for
-details.
+Source © Brightcove, Inc. 2016, authored by Tim McCormack. License not yet
+determined. Vendored libraries have other ownership and licensing. See
+COPYING.md for details.

@@ -66,22 +66,16 @@ function showServiceInfo(sid) {
   $('<p>').addClass('desc').text(svc.desc || '(no description)')
   .appendTo($info);
 
+  $('<p>').addClass('team').text('Team: ' + (svc.team || '(unknown)'))
+  .appendTo($info);
+
   var $links = $('<ul>');
-  $.each(svc.links, function(_i, link) {
+  $.each(svc.links, function linkit(_i, link) {
     $('<a>').attr('href', link.url).text(linkName(link))
     .wrap('<li>').parent().addClass('ltype-'+link.type)
     .appendTo($links)
   });
   $links.appendTo($info);
-
-  var $attrs = $('<dl>');
-  $.each(svc.attrs, function(key, value) {
-    if (typeof value === 'string' && value !== '') {
-      $('<dt>').text(key).appendTo($attrs);
-      $('<dd>').text(value).appendTo($attrs);
-    }
-  });
-  $attrs.appendTo($info);
 
   $info.removeClass('hidden');
 }

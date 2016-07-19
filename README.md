@@ -121,6 +121,43 @@ Represent and display the following types of information:
 - Number of instances
 - Current and recent health of instances (sparklines?)
 
+### Alternative graph viewers
+
+Cytoscape is decent, but it has fairly limited rendering, and we'll
+probably want custom SVG or (even better) HTML nodes. Interesting
+links, some of which are only listed as bases of comparison:
+
+- [Dracula](https://www.graphdracula.net/): Allows SVG rendering, but
+  has very limited documentation and layout support. However, there
+  are great links in the sidebar.
+- [arbor](https://github.com/samizdatco/arbor): Leaves rendering to
+  relying code, only provides layout algorithm. Force-directed layout
+  isn't so useful here, but the bring-your-own-rendering is
+  interesting.
+- <https://en.wikipedia.org/wiki/Category:Graph_drawing> for other
+  layout ideas
+- https://gephi.org/ is a desktop application (not sure how extensible
+  it is for monitoring integrations)
+- Call graphviz from the server for layout, then render on the client
+- [dagre](https://github.com/cpettitt/dagre/wiki): Layout algorithm
+  currently in use; the Recommended Reading section has great
+  references on directed graph layout theory (write our own?)
+- [d3](https://github.com/d3/d3) is huge, it probably has some neat
+  layout algorithms, and certainly is flexible enough for anything
+- [We Love Graphs](https://anvaka.github.io/graph-drawing-libraries/):
+  A comparison of various graph drawing libraries in JS
+- A [Stack Overflow](https://stackoverflow.com/questions/7034/graph-visualization-library-in-javascript)
+  question where I found some of these links
+- [yFiles for HTML](https://www.yworks.com/products/yfiles-for-html):
+  Large commercial graphing library, may or may not behave well for
+  the DAG/mostly-DAG data we have
+
+## Other links
+
+- [Managing Microservices with Neo4j](https://neo4j.com/blog/managing-microservices-neo4j/)
+  — these folks went from microservice graph monitoring into actually
+  managing and deploying their servers
+
 ## License
 
 Source © Brightcove, Inc. 2016, authored by Tim McCormack. License not yet

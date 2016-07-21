@@ -5,11 +5,13 @@
               [handler :as handler]
               [route :as route])
    [ring.adapter.jetty :as jetty]
-   (octaview.api [services :refer [services-routes]])
+   (octaview.api [services :refer [services-routes]]
+                 [monitors :refer [monitors-routes]])
    [octaview.config :as config :refer [cnf]]))
 
 (defroutes all-routes
   services-routes
+  monitors-routes
   (route/resources "/" {:root "public"}))
 
 (defn wrap-cache-vendored

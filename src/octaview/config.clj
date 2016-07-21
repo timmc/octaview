@@ -1,6 +1,19 @@
 (ns octaview.config
-  (:require [cheshire.core :as json])
-  (:import (java.io File)))
+  "Configuration access.
+
+API:
+
+- load!
+- cnf
+- settings-dir
+- resolve-rel-settings"
+  (:require [cheshire.core :as json]
+            [clojure.java.io :as io]
+            [clojure.tools.logging :as log])
+  (:import (java.io File)
+           (java.util Properties)))
+
+;;;; Configuration
 
 (defn validate
   [cnf]
@@ -52,3 +65,28 @@
   ^java.io.File
   [^String rel-path]
   (File. (settings-dir) rel-path))
+
+;;;; Introspection
+
+(def project-properties-resource-path
+  "Resource path for Maven pom properties"
+  "META-INF/maven/org.timmc/octaview/pom.properties")
+
+(defn read-own-version*
+  "Unmemoized version of read-own-version."
+  []
+  (try
+    (with-open [rdr (io/reader (io/resource project-properties-resource-path)
+                               :encoding "UTF-8")]
+      (.getProperty (doto (Properties.)
+                      (.load rdr))
+                    "version"
+                    "unknown"))
+    (catch Exception e
+      (log/warn "Octaview could not discover own version:" e)
+      "unknown")))
+
+(def read-own-version
+  "Read own version from project properties, or return \"unknown\"
+on error. (Memoized.)"
+  (memoize read-own-version*))

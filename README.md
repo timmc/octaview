@@ -19,6 +19,11 @@ Work in progress.
 - In **Pathfinder** mode, clicking on two services will show the
   dependency chain from the first to the second
 
+## Screenshots
+
+![Screenshot of explore mode](demo/larger-explore.png)
+![Screenshot of pathfinder mode](demo/larger-pathfinder.png)
+
 ## Demo
 
 After installing the [Leiningen][lein] build tool for Clojure:

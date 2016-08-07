@@ -162,6 +162,8 @@ links, some of which are only listed as bases of comparison:
 - [Managing Microservices with Neo4j](https://neo4j.com/blog/managing-microservices-neo4j/)
   — these folks went from microservice graph monitoring into actually
   managing and deploying their servers
+- Netflix's [Vizceral](https://github.com/Netflix/vizceral) is a service
+  monitoring tool that includes a services graph.
 
 ## License
 

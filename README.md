@@ -100,6 +100,11 @@ Silly example:
 Support the following interactions:
 
 - "What is this service? Where can I find docs, source, monitoring?"
+- "What is the dependency between A and B for? What are its
+  properties?"
+- Bookmarking a subset of the nodes with a permalink to include in
+  documentation.
+- Find services and edges using type-ahead search
 - "Show me only the things on the paths between A and B"
 - "At a glance, are there any services with monitor alerts, and are
   they related?"
